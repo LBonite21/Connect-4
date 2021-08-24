@@ -147,17 +147,17 @@ public class Connect4 {
 	private void takeTurn() {
 		boolean placed = false;
 		int col = -1;
-
+		int row = 0; 
 		while (!placed) {
 			col = userInteraction.promptForDropColumn(currentPlayer);
 			try {
-				board.placePiece(col, new Piece(currentPlayer.getColor()));
+				row = board.placePiece(col, new Piece(currentPlayer.getColor()));
 				placed = true;
 			} catch (IllegalArgumentException ex) {
 				userInteraction.errorColumnFull(col);
 			}
 		}
-		checkWin(5, col, currentPlayer.getColor());
+		checkWin(row, col, currentPlayer.getColor());
 	}
 
 	private void compTakeTurn() {
@@ -189,7 +189,7 @@ public class Connect4 {
 
 		int win = 1;
 
-		// horizontal right
+		// Horizontal Right Win Condition
 		for (int i = col + 1; i < Board.MAX_COLS; i++) {
 			if (board.getPieces()[row][i].color == color) {
 				win += 1;
@@ -198,7 +198,7 @@ public class Connect4 {
 			}
 		}
 
-		// horizontal left
+		// Horizontal Left Win Condition
 		for (int i = col - 1; i >= 0; i--) {
 			if (board.getPieces()[row][i].color == color) {
 				win += 1;

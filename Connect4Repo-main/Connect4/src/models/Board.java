@@ -27,8 +27,8 @@ public class Board {
 		}
 	}
 
-	public void placePiece(int col, Piece p) {
-		
+	public int placePiece(int col, Piece p) {
+		int row = 0;
 		if (pieces[0][col].color != Color.Empty) {
 			throw new IllegalArgumentException("No open spaces in column " + col);
 		}
@@ -36,9 +36,11 @@ public class Board {
 		for(int r = MAX_ROWS - 1; r >= 0; r--) {
 			if(pieces[r][col].color == Color.Empty) {
 				pieces[r][col] = p;
-				return;
+				row = r;
+				break;
 			}
 		}
+		return row;
 	}
 	
 	public String toString() {

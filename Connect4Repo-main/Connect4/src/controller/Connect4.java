@@ -53,7 +53,7 @@ public class Connect4 {
 			System.out.println("\n" + board);
 			System.out.println();
 			takeTurn();
-//			checkWin(0, currentPlayer.takeTurn(), currentPlayer.getColor());
+			//checkWin(0, currentPlayer.takeTurn(), currentPlayer.getColor());
 			switchTurn();
 
 		} while (!gameOver);
@@ -157,7 +157,7 @@ public class Connect4 {
 				userInteraction.errorColumnFull(col);
 			}
 		}
-//		checkWin(0, col, currentPlayer.getColor());
+		checkWin(5, col, currentPlayer.getColor());
 	}
 
 	private void compTakeTurn() {
@@ -190,22 +190,20 @@ public class Connect4 {
 		int win = 1;
 
 		// horizontal right
-		for (int i = col + 1; i < col + 3; i++) {
-			if (i >= col + 3) {
-				continue;
-			}
+		for (int i = col + 1; i < Board.MAX_COLS; i++) {
 			if (board.getPieces()[row][i].color == color) {
 				win += 1;
+			} else {
+				break;
 			}
 		}
 
 		// horizontal left
-		for (int i = col - 1; i < col - 3; i++) {
-			if (i >= col - 3) {
-				continue;
-			}
+		for (int i = col - 1; i >= 0; i--) {
 			if (board.getPieces()[row][i].color == color) {
 				win += 1;
+			} else {
+				break;
 			}
 		}
 

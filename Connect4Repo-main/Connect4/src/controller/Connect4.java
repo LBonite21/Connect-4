@@ -164,19 +164,19 @@ public class Connect4 {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		boolean placed = false;
 		int col = -1;
-
+		int row = 0;
 		while (!placed) {
 			col = userInteraction.promptCompDropColumn(currentPlayer);
 			System.out.println("Press ENTER to continue");
 			try {
 				reader.readLine();
-				board.placePiece(col, new Piece(currentPlayer.getColor()));
+				row = board.placePiece(col, new Piece(currentPlayer.getColor()));
 				placed = true;
 			} catch (IllegalArgumentException | IOException ex) {
 				userInteraction.errorColumnFull(col);
 			}
 		}
-//		checkWin(0, col, currentPlayer.getColor());
+		checkWin(row, col, currentPlayer.getColor());
 	}
 
 	private void switchTurn() {
@@ -188,7 +188,6 @@ public class Connect4 {
 //		Piece[][] pieces = new Piece[Board.MAX_ROWS][Board.MAX_COLS];
 
 		int win = 1;
-
 		// Horizontal Right Win Condition
 		for (int i = col + 1; i < Board.MAX_COLS; i++) {
 			if (board.getPieces()[row][i].color == color) {
@@ -197,7 +196,6 @@ public class Connect4 {
 				break;
 			}
 		}
-
 		// Horizontal Left Win Condition
 		for (int i = col - 1; i >= 0; i--) {
 			if (board.getPieces()[row][i].color == color) {
@@ -206,52 +204,27 @@ public class Connect4 {
 				break;
 			}
 		}
-
 		if (win == 4) {
 			System.out.println(board);
 			System.out.println("You won the game!!!!");
 			gameOver = true;
 		}
 
-//		int win = 0;
-//
-//		// horizontalCheck
-//
-//		for (int j = 0; j < Board.MAX_COLS - 3; j++) {
-//			for (int i = 0; i < Board.MAX_ROWS; i++) {
-//
-//				if (board.getPieces()[i][j] != null) {
-//					if (board.getPieces()[i][j].color == currentPlayer.getColor()) {
-//						win += 1;
-//					}
-//				}
-//				if (board.getPieces()[i][j + 1] != null) {
-//					if (board.getPieces()[i][j + 1].color == currentPlayer.getColor()) {
-//						win += 1;
-//					}
-//					if (board.getPieces()[i][j + 2] != null) {
-//						if (board.getPieces()[i][j + 2].color == currentPlayer.getColor()) {
-//							win += 1;
-//						}
-//					}
-//
-//					if (board.getPieces()[i][j + 3] != null) {
-//						if (board.getPieces()[i][j + 3].color == currentPlayer.getColor()) {
-//							win += 1;
-//						}
-//					}
-//				}
-//
-//			}
-//		}
-//	    // verticalCheck
-//	    for (int i = 0; i<getWidth()-3 ; i++ ){
-//	        for (int j = 0; j<this.getHeight(); j++){
-//	            if (this.board[i][j] == currentPlayer && this.board[i+1][j] == currentPlayer && this.board[i+2][j] == currentPlayer && this.board[i+3][j] == currentPlayer){
-//	                return true;
-//	            }           
-//	        }
-//	    }
+	    // verticalCheck
+		win = 0;
+		for(int i = row; i < Board.MAX_ROWS; i++) {
+			if (board.getPieces()[i][col].color == color) {
+				win += 1;
+			} else {
+				break;
+			}
+		}
+		if (win == 4) {
+			System.out.println(board);
+			System.out.println("You won the game!!!!");
+			gameOver = true;
+		}
+
 //	    // ascendingDiagonalCheck 
 //	    for (int i=3; i<getWidth(); i++){
 //	        for (int j=0; j<getHeight()-3; j++){

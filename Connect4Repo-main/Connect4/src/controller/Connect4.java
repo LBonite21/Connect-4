@@ -20,6 +20,7 @@ public class Connect4 {
 	private Player player1 = new Player();
 	private Player player2 = new Player();
 	private Player currentPlayer;
+	private boolean squareMode = false;
 	private boolean gameOver = false;
 	private Random rng = new Random();
 
@@ -35,13 +36,17 @@ public class Connect4 {
 				humanVsComp();
 			} else if (menuSelection == 3) {
 				compVsComp();
-			} else if (menuSelection == 0) {
-				continue;
 			}
 			
-			gameOver = !ConsoleIO.promptForBool("Would you like to play again? Yes or No: ", "Yes", "No");
+			gameOver = menuSelection == 0 ? true : !ConsoleIO.promptForBool("Would you like to play again? Yes or No: ", "Yes", "No");
 		} while (!gameOver);
 
+	}
+	
+	private void AskForSquareMode() {
+		String prompt = "In Square Mode, instead of creating a straight line, the goal is to create a 2x2 square with your color.\nChange to Square Mode? (yes/no) ";
+		
+		squareMode = ConsoleIO.promptForBool(prompt, "yes", "no");
 	}
 
 	private void humanVsHuman() {
@@ -111,6 +116,8 @@ public class Connect4 {
 	}
 
 	private void init() {
+		AskForSquareMode();
+		
 		rng = new Random();
 		int goingFirst = rng.nextInt(2);
 
@@ -168,12 +175,17 @@ public class Connect4 {
 	}
 
 	private boolean checkWin(int row, int col, Color color) {
-		//HorizontalCheck
-		gameOver = HorizontalWinCheck(row, col, color);
-	    // VerticalCheck
-		gameOver = VerticalWinCheck(row, col, color);
-		//Diagonal Check
-		gameOver = DiagonalWinCheck(row, col, color);
+		if (squareMode) {
+			// Square Check
+			gameOver = SquareWinCheck(row, col, color) || gameOver;
+		} else {
+			// HorizontalCheck
+			gameOver = HorizontalWinCheck(row, col, color);
+			// VerticalCheck
+			gameOver = VerticalWinCheck(row, col, color) || gameOver;
+			// Diagonal Check
+			gameOver = DiagonalWinCheck(row, col, color) || gameOver;			
+		}
 		
 		return gameOver;
 	}
@@ -201,7 +213,7 @@ public class Connect4 {
 		
 		if (win == 4) {
 			System.out.println(board);
-			System.out.println(color.toString() + " won the game!!!!");
+			System.out.println(currentPlayer.getName() + " won the game!!!!");
 			gameOver = true;
 		}
 		return gameOver;
@@ -220,7 +232,7 @@ public class Connect4 {
 		
 		if (win == 4) {
 			System.out.println(board);
-			System.out.println(color.toString() + " won the game!!!!");
+			System.out.println(currentPlayer.getName() + " won the game!!!!");
 			gameOver = true;
 		}
 		return gameOver;
@@ -292,9 +304,41 @@ public class Connect4 {
 		
 		if (win == 4) {
 			System.out.println(board);
-			System.out.println(color.toString() + " won the game!!!!");
+			System.out.println(currentPlayer.getName() + " won the game!!!!");
 			gameOver = true;
 		}
 		return gameOver;
+	}
+
+	private boolean SquareWinCheck(int row, int col, Color color) {
+		// There is no top left / top right because those scenarios should be impossible
+		boolean result = false;
+		boolean topRow = false;
+		boolean bottomRow = false;
+		
+		// Checks the "bottom left" potential square
+		if (row < Board.MAX_ROWS - 1 && col > 0 && !result) {
+			topRow = board.getPieces()[row + 1][col - 1].color == color
+					&& board.getPieces()[row + 1][col].color == color;
+			bottomRow = board.getPieces()[row][col - 1].color == color
+					&& board.getPieces()[row][col].color == color;
+			result = topRow && bottomRow;
+		}
+		
+		// Checks the "bottom right" potential square
+		if (row < Board.MAX_ROWS - 1 && col < Board.MAX_COLS - 1 && !result) {
+			topRow = board.getPieces()[row + 1][col].color == color
+					&& board.getPieces()[row + 1][col + 1].color == color;
+			bottomRow = board.getPieces()[row][col].color == color
+					&& board.getPieces()[row][col + 1].color == color;
+			result = topRow && bottomRow;
+		}
+		
+		if (result) {
+			System.out.println(board);
+			System.out.println(currentPlayer.getName() + " won the game!!!!");
+		}
+		
+		return result;
 	}
 }

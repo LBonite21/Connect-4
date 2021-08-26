@@ -27,10 +27,11 @@ public class userInteraction {
 	public int promptForDropColumn(Player turn) {
 		boolean isInvalid = false;
 		int column = 0;
+		String prompt = turn.getName() + ", from 1-7 which column do you want? "; 
 
 		do {
 			try {
-				column = ConsoleIO.promptForInt(turn.getName() + ", from 1-7 which column do you want? ", 1,
+				column = ConsoleIO.promptForInt(prompt, 1,
 						Board.MAX_COLS) - 1;
 				isInvalid = false;
 				if (column < 0 || column > 7) {

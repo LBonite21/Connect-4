@@ -206,7 +206,7 @@ public class Connect4 {
 		}
 		if (win == 4) {
 			System.out.println(board);
-			System.out.println("You won the game!!!!");
+			System.out.println("Congratulations " + currentPlayer + ", you won the game!!!!");
 			gameOver = true;
 		}
 
@@ -221,7 +221,7 @@ public class Connect4 {
 		}
 		if (win == 4) {
 			System.out.println(board);
-			System.out.println("You won the game!!!!");
+			System.out.println("Congratulations " + currentPlayer + ", you won the game!!!!");
 			gameOver = true;
 		}
 

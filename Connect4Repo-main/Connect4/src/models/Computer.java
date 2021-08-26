@@ -32,6 +32,9 @@ public class Computer extends Player {
 	public int takeTurn() {
 		int compColumn = 0;
 		compColumn = ConsoleIO.promptForInt(getName() + ", from 1-7 which column do you want? ", 1, Board.MAX_COLS) - 1;
+		
+		//Make AI think
+		
 		compColumn = rng.nextInt(6 + 1);
 		return compColumn;
 	}

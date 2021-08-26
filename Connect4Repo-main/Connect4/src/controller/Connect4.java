@@ -271,6 +271,12 @@ public class Connect4 {
 			}
 		}
 
+		if (win == 4) {
+			System.out.println(board);
+			System.out.println(color.toString() + " won the game!!!!");
+			gameOver = true;
+		}
+		
 		// Up-Left
 		win = 1;
 		j = col - 1;

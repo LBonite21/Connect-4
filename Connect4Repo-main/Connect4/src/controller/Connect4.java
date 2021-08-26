@@ -38,9 +38,8 @@ public class Connect4 {
 			} else if (menuSelection == 0) {
 				continue;
 			}
-
+			
 			gameOver = !ConsoleIO.promptForBool("Would you like to play again? Yes or No: ", "Yes", "No");
-
 		} while (!gameOver);
 
 	}
@@ -53,9 +52,7 @@ public class Connect4 {
 			System.out.println("\n" + board);
 			System.out.println();
 			takeTurn();
-			//checkWin(0, currentPlayer.takeTurn(), currentPlayer.getColor());
 			switchTurn();
-
 		} while (!gameOver);
 
 	}
@@ -70,15 +67,12 @@ public class Connect4 {
 			player1 = new Player(userInteraction.getPlayerName(1), Color.Red);
 			player2 = new Computer(userInteraction.getCompName(), Color.Yellow);
 			currentPlayer = player1;
-
 		} else {
 			System.out.print("Computer goes first!\n\n");
 			player2 = new Computer(userInteraction.getCompName(), Color.Red);
 			player1 = new Player(userInteraction.getPlayerName(1), Color.Yellow);
 			currentPlayer = player2;
-
 		}
-
 		do {
 			System.out.println("\n" + board);
 			System.out.println();
@@ -87,11 +81,8 @@ public class Connect4 {
 			} else {
 				takeTurn();
 			}
-//			checkWin(0, currentPlayer.takeTurn(), currentPlayer.getColor());
 			switchTurn();
-
 		} while (!gameOver);
-
 	}
 
 	private void compVsComp() {
@@ -104,22 +95,17 @@ public class Connect4 {
 			player1 = new Computer(userInteraction.getCompName(), Color.Red);
 			player2 = new Computer(userInteraction.getCompName(), Color.Yellow);
 			currentPlayer = player1;
-
 		} else {
 			System.out.print("Computer goes first!\n\n");
 			player1 = new Computer(userInteraction.getCompName(), Color.Red);
 			player2 = new Computer(userInteraction.getCompName(), Color.Yellow);
 			currentPlayer = player1;
-
 		}
-
 		do {
 			System.out.println("\n" + board);
 			System.out.println();
 			compTakeTurn();
-//			checkWin(0, currentPlayer.takeTurn(), currentPlayer.getColor());
 			switchTurn();
-
 		} while (!gameOver);
 
 	}
@@ -139,9 +125,7 @@ public class Connect4 {
 			player1 = new Player(userInteraction.getPlayerName(2), Color.Yellow);
 			player2 = new Player(userInteraction.getPlayerName(1), Color.Red);
 			currentPlayer = player1;
-
 		}
-
 	}
 
 	private void takeTurn() {
@@ -181,13 +165,22 @@ public class Connect4 {
 
 	private void switchTurn() {
 		currentPlayer = (currentPlayer == player1 ? player2 : player1);
-
 	}
 
 	private boolean checkWin(int row, int col, Color color) {
-//		Piece[][] pieces = new Piece[Board.MAX_ROWS][Board.MAX_COLS];
-
+		//HorizontalCheck
+		gameOver = HorizontalWinCheck(row, col, color);
+	    // VerticalCheck
+		gameOver = VerticalWinCheck(row, col, color);
+		//Diagonal Check
+		gameOver = DiagonalWinCheck(row, col, color);
+		
+		return gameOver;
+	}
+	
+	private boolean HorizontalWinCheck(int row, int col, Color color) {
 		int win = 1;
+		
 		// Horizontal Right Win Condition
 		for (int i = col + 1; i < Board.MAX_COLS; i++) {
 			if (board.getPieces()[row][i].color == color) {
@@ -196,6 +189,7 @@ public class Connect4 {
 				break;
 			}
 		}
+		
 		// Horizontal Left Win Condition
 		for (int i = col - 1; i >= 0; i--) {
 			if (board.getPieces()[row][i].color == color) {
@@ -204,14 +198,18 @@ public class Connect4 {
 				break;
 			}
 		}
+		
 		if (win == 4) {
 			System.out.println(board);
-			System.out.println("You won the game!!!!");
+			System.out.println(color.toString() + " won the game!!!!");
 			gameOver = true;
 		}
-
-	    // verticalCheck
-		win = 0;
+		return gameOver;
+	}
+	
+	private boolean VerticalWinCheck(int row, int col, Color color) {
+		int win = 0;
+		
 		for(int i = row; i < Board.MAX_ROWS; i++) {
 			if (board.getPieces()[i][col].color == color) {
 				win += 1;
@@ -219,28 +217,84 @@ public class Connect4 {
 				break;
 			}
 		}
+		
 		if (win == 4) {
 			System.out.println(board);
-			System.out.println("You won the game!!!!");
+			System.out.println(color.toString() + " won the game!!!!");
 			gameOver = true;
 		}
+		return gameOver;
+	}
+	
+	private boolean DiagonalWinCheck(int row, int col, Color color) {
+		int win = 1;
+		int j = col + 1;
+		
+		// Up-Right
+		for(int i = row - 1; i >= 0; i--) {
+			if(j > Board.MAX_COLS - 1) {
+				break;
+			}
+			
+			if (board.getPieces()[i][j].color == color) {
+				win += 1;
+				j++;
+			} else {
+				break;
+			}
+		}
+		
+		// Down-Left
+		j = col - 1;
+		for(int i = row + 1; i < Board.MAX_ROWS; i++) {
+			if(j < 0) {
+				break;
+			}
+			
+			if (board.getPieces()[i][j].color == color) {
+				win += 1;
+				j--;
+			} else {
+				break;
+			}
+		}
 
-//	    // ascendingDiagonalCheck 
-//	    for (int i=3; i<getWidth(); i++){
-//	        for (int j=0; j<getHeight()-3; j++){
-//	            if (this.board[i][j] == currentPlayer && this.board[i-1][j+1] == currentPlayer && this.board[i-2][j+2] == currentPlayer && this.board[i-3][j+3] == currentPlayer)
-//	                return true;
-//	        }
-//	    }
-//	    // descendingDiagonalCheck
-//	    for (int i=3; i<getWidth(); i++){
-//	        for (int j=3; j<getHeight(); j++){
-//	            if (this.board[i][j] == currentPlayer && this.board[i-1][j-1] == currentPlayer && this.board[i-2][j-2] == currentPlayer && this.board[i-3][j-3] == currentPlayer)
-//	                return true;
-//	        }
-//	    }
-//	    return false;
-
+		// Up-Left
+		win = 1;
+		j = col - 1;
+		for(int i = row - 1; i >= 0; i--) {
+			if(j < 0) {
+				break;
+			}
+			
+			if (board.getPieces()[i][j].color == color) {
+				win += 1;
+				j--;
+			} else {
+				break;
+			}
+		}
+		
+		// Down-Right
+		j = col + 1;
+		for(int i = row + 1; i < Board.MAX_ROWS; i++) {
+			if(j > Board.MAX_COLS - 1) {
+				break;
+			}
+			
+			if (board.getPieces()[i][j].color == color) {
+				win += 1;
+				j++;
+			} else {
+				break;
+			}
+		}
+		
+		if (win == 4) {
+			System.out.println(board);
+			System.out.println(color.toString() + " won the game!!!!");
+			gameOver = true;
+		}
 		return gameOver;
 	}
 }

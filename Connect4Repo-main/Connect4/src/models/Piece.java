@@ -2,7 +2,7 @@ package models;
 
 public class Piece {
 	
-	public final Color color;
+	public Color color;
 
 	public Piece(Color c) {
 		color = c;

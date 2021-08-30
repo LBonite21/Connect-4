@@ -4,7 +4,7 @@ import lib.ConsoleIO;
 
 public class Player {
 	
-	private String name;
+	protected String name;
 	private Color color;
 	
 	public Player() {}
@@ -29,7 +29,7 @@ public class Player {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-
+	
 	public int takeTurn() {
 		int column = 0;
 		column = ConsoleIO.promptForInt(getName() + ", from 1-7 which column do you want? ", 1, Board.MAX_COLS) - 1;
@@ -40,5 +40,4 @@ public class Player {
 	public String toString() {
 		return getName();
 	}
-
 }

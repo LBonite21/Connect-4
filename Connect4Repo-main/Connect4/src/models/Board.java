@@ -1,11 +1,14 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
 	
 	public static final int MAX_COLS = 7;
 	public static final int MAX_ROWS = 6;
 	private Piece[][] pieces = new Piece[MAX_ROWS][MAX_COLS];
-	
+	public Color pieceColor = Color.Empty;
 	
 	public void resetBoard() {
 		for (int i = 0; i < pieces.length; i++) {
@@ -18,6 +21,10 @@ public class Board {
 	public Piece[][] getPieces() {
 		return pieces;
 	}
+	
+	public void setPiece(Color pieceColor) {
+		this.pieceColor = pieceColor;
+	}
 
 	public Board() {
 		for (int i = 0; i < pieces.length; i++) {
@@ -25,6 +32,23 @@ public class Board {
 				pieces[i][j] = new Piece(Color.Empty);
 			}
 		}
+	}
+	
+	//Gets available cells
+	public List<Integer> getAvailableCells() {
+		List<Integer> availableCells = new ArrayList<>();
+//		piece = new Piece(Color.Empty);
+		
+		for (int i = 0; i < MAX_COLS; i++) {
+//			for (int j = 0; j < pieces[i].length; j++) {
+				if (pieces[0][i].color == Color.Empty) {
+					availableCells.add(i);
+				}
+//			}
+		}
+//		System.out.println("Available Cells: " + availableCells + " ");
+		
+		return availableCells;
 	}
 
 	public int placePiece(int col, Piece p) {

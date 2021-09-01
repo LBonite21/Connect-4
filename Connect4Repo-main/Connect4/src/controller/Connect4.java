@@ -12,7 +12,6 @@ import models.Computer;
 import models.Piece;
 import models.Player;
 import models.Tree;
-import view.GUI;
 import view.userInteraction;
 
 public class Connect4 {
@@ -39,15 +38,13 @@ public class Connect4 {
 				humanVsComp();
 			} else if (menuSelection == 3) {
 				compVsComp();
-			}else if(menuSelection == 4) {
-				humanvshumanGUI();
 			}
 
 			gameOver = menuSelection == 0 ? true
 					: !ConsoleIO.promptForBool("Would you like to play again? Yes or No: ", "Yes", "No");
 			System.out.println();
 		} while (!gameOver);
-		System.exit(0);
+
 	}
 
 	private void AskForSquareMode() {
@@ -56,10 +53,6 @@ public class Connect4 {
 		squareMode = ConsoleIO.promptForBool(prompt, "yes", "no");
 	}
 
-	private void humanvshumanGUI() {
-		GUI gui = new GUI();
-	}
-	
 	private void humanVsHuman() {
 		board.resetBoard();
 		init();

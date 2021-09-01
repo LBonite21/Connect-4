@@ -59,7 +59,7 @@ public class userInteraction {
 	}
 
 	public int displayMainMenu() {
-		String[] options = { "Human vs. Human", "Human vs. Comp", "Comp vs. Comp" };
+		String[] options = { "Human vs. Human", "Human vs. Comp", "Comp vs. Comp", "Human vs. Human (GUI" };
 		int menuSelection = ConsoleIO.promptForMenuSelection(options, true);
 		return menuSelection;
 

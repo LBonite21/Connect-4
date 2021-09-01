@@ -39,8 +39,6 @@ public class Connect4 {
 				humanVsComp();
 			} else if (menuSelection == 3) {
 				compVsComp();
-			}else if(menuSelection == 4) {
-				humanvshumanGUI();
 			}
 
 			gameOver = menuSelection == 0 ? true
